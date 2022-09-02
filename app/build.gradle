@@ -116,6 +116,11 @@ dependencies {
     implementation "com.google.android.gms:play-services-location:18.0.0"
     implementation "com.google.android.gms:play-services-maps:18.0.0"
     implementation "com.google.maps.android:android-maps-utils:0.6.1"
+    /**
+     * Google Places
+     */
+    implementation 'com.google.android.gms:play-services-places:16.1.0'
+    implementation 'com.google.android.libraries.places:places:1.1.0'
 
     //google services
     implementation "com.google.android.gms:play-services-base:18.1.0"

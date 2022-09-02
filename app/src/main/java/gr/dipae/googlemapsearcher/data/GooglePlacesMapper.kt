@@ -10,10 +10,10 @@ class GooglePlacesMapper @Inject constructor() : Mapper {
 
     operator fun invoke(response: GooglePlacesResponse): GooglePlaces {
         val googlePlacesList = mutableListOf<MapClusterItem>()
-        response.results?.forEach {
+        response.candidates?.forEach {
             googlePlacesList.add(
                 MapClusterItem(
-                    id = it.placeId ?: "",
+                    id = it.name ?: "",
                     latitude = it.geometry?.location?.lat ?: (0).toDouble(),
                     longitude = it.geometry?.location?.lng ?: (0).toDouble()
                 )

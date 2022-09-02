@@ -5,6 +5,10 @@ import android.content.Context
 import android.location.LocationManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.squareup.moshi.Moshi
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -50,19 +54,27 @@ object MapModule {
         return okHttpClient.build()
     }
 
-    @Singleton
     @Provides
-    fun provideGooglePlacesApi(
-        moshiConverterFactory: MoshiConverterFactory,
-        okHttpClient: OkHttpClient
-    ): GooglePlacesApi {
-        return Retrofit.Builder()
+    fun provideAutoCompleteToken(): AutocompleteSessionToken = AutocompleteSessionToken.newInstance()
+
+    @Provides
+    fun provideRetrofitForGooglePlaces(okHttpClient: OkHttpClient, moshi: Moshi): GooglePlacesApi {
+        val retrofit = Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .client(okHttpClient)
-            .addConverterFactory(moshiConverterFactory)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
-            .create(GooglePlacesApi::class.java)
+
+        return retrofit.create(GooglePlacesApi::class.java)
     }
+
+    @Provides
+    fun providePlacesClient(context: Context): PlacesClient {
+        Places.initialize(context, PLACES_API_KEY)
+        return Places.createClient(context)
+    }
+
+    const val PLACES_API_KEY = "AIzaSyAM4ohNphBqIoD2d8Nc_aE08sRsnH6Dg5E"
 
     @Provides
     fun provideLocationManager(application: Application): LocationManager {

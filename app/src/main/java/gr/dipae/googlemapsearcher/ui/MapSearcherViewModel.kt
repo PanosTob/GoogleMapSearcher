@@ -51,7 +51,7 @@ class MapSearcherViewModel @Inject constructor(
     fun searchForGooglePlaces(query: String) {
         launchWithProgress {
             userLocation?.let {
-                _showGooglePlacesUI.value = getGooglePlacesUseCase("${it.latitude},${it.longitude}", query).clusterItems
+                _showGooglePlacesUI.value = getGooglePlacesUseCase("point:${it.latitude},${it.longitude}", query).clusterItems
             }
         }
     }

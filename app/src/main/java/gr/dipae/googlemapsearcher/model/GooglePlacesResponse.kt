@@ -8,15 +8,15 @@ data class GooglePlacesResponse(
     @Json(name = "html_attributions")
     val htmlAttributions: List<String>?,
     @Json(name = "results")
-    val results: List<GooglePlacesDetailsResponse>?,
+    val candidates: List<GooglePlacesDetailsResponse>?,
     @Json(name = "status")
     val status: String?,
 )
 
 @JsonClass(generateAdapter = true)
 data class GooglePlacesDetailsResponse(
-    @Json(name = "place_id")
-    val placeId: String?,
+    @Json(name = "name")
+    val name: String?,
     @Json(name = "geometry")
     val geometry: GooglePlacesLocationResponse?
 )
