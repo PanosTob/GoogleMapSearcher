@@ -17,18 +17,6 @@ class AppActivity : BaseActivity<ActivityAppBinding>() {
 
     override fun getViewBinding(): ActivityAppBinding = ActivityAppBinding.inflate(layoutInflater)
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setupLoadingObserver()
-    }
-
-    private fun setupLoadingObserver() {
-        LoadingLiveData.observe(this) {
-            binding.loadingGroup.isVisible = it
-        }
-    }
-
     fun checkForLocationServices() {
         if (hasPermissions(FOREGROUND_LOCATION_PERMISSIONS)) {
             viewModel.showLocationOnMap()
