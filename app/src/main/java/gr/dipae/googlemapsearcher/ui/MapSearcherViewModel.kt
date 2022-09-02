@@ -28,10 +28,14 @@ class MapSearcherViewModel @Inject constructor(
     private val _showGooglePlacesUI = SingleLiveEvent<List<MapClusterItem>>()
     val showGooglePlacesUI: LiveData<List<MapClusterItem>> = _showGooglePlacesUI
 
+    private var userLocation: UserLocation? = null
     fun centerOnUserLocation() {
         launch {
             when (val result = getUserLocationUseCase()) {
-                is UserLocationResultType.Success -> result.userLocation.let { _showUserLocationOnMapUI.value = it }
+                is UserLocationResultType.Success -> result.userLocation.let {
+                    _showUserLocationOnMapUI.value = it
+                    userLocation = it
+                }
                 is UserLocationResultType.GpsNotEnabled -> errorLiveData.value = R.string.error_no_gps
                 is UserLocationResultType.Failure -> errorLiveData.value = R.string.error_generic
             }
@@ -46,7 +50,9 @@ class MapSearcherViewModel @Inject constructor(
 
     fun searchForGooglePlaces(query: String) {
         launchWithProgress {
-            _showGooglePlacesUI.value = getGooglePlacesUseCase(query).clusterItems
+            userLocation?.let {
+                _showGooglePlacesUI.value = getGooglePlacesUseCase("${it.latitude},${it.longitude}", query).clusterItems
+            }
         }
     }
 }

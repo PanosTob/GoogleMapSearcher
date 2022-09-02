@@ -8,7 +8,7 @@ import gr.dipae.googlemapsearcher.util.suspended
 import javax.inject.Inject
 
 interface MapSearcherRepository {
-    suspend fun getGooglePlaces(query: String): GooglePlaces
+    suspend fun getGooglePlaces(location: String, query: String): GooglePlaces
     suspend fun getUserLocation(): UserLocation
     fun isLocationServiceEnabled(): Boolean
 }
@@ -17,8 +17,8 @@ class MapSearcherRepositoryImpl @Inject constructor(
     private val dataSource: MapSearcherDataSource,
     private val googlePlacesMapper: GooglePlacesMapper
 ): MapSearcherRepository {
-    override suspend fun getGooglePlaces(query: String): GooglePlaces {
-        return googlePlacesMapper(dataSource.getGooglePlaces(query))
+    override suspend fun getGooglePlaces(location: String, query: String): GooglePlaces {
+        return googlePlacesMapper(dataSource.getGooglePlaces(location, query))
     }
 
     override fun isLocationServiceEnabled(): Boolean = dataSource.isLocationServiceEnabled()

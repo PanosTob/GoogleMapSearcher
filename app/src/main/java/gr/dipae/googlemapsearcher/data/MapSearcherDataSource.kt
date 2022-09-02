@@ -13,7 +13,11 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 interface MapSearcherDataSource {
-    suspend fun getGooglePlaces(query: String): GooglePlacesResponse
+    suspend fun getGooglePlaces(
+        location: String,
+        query: String
+    ): GooglePlacesResponse
+
     suspend fun getUserLocation(): UserLocation
     fun isLocationServiceEnabled(): Boolean
 }
@@ -23,9 +27,12 @@ class MapSearcherDataSourceImpl @Inject constructor(
     private val fusedLocationProviderClient: FusedLocationProviderClient,
     private val locationManager: LocationManager,
 ): MapSearcherDataSource {
-    override suspend fun getGooglePlaces(query: String): GooglePlacesResponse {
+    override suspend fun getGooglePlaces(
+        location: String,
+        query: String
+    ): GooglePlacesResponse {
         return withContext(Dispatchers.IO) {
-            api.getGooglePlaces(query).requireNotNull()
+            api.getGooglePlaces(location, query).requireNotNull()
         }
     }
 

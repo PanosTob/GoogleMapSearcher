@@ -5,6 +5,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class GooglePlacesResponse(
+    @Json(name = "results")
     val results: List<GooglePlacesDetailsResponse>?
 )
 
@@ -12,6 +13,7 @@ data class GooglePlacesResponse(
 data class GooglePlacesDetailsResponse(
     @Json(name = "place_id")
     val placeId: String?,
+    @Json(name = "geometry")
     val geometry: GooglePlacesLocationResponse?
 )
 

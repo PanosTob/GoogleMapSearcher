@@ -2,7 +2,9 @@ package gr.dipae.googlemapsearcher.ui
 
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import dagger.hilt.android.AndroidEntryPoint
 import gr.dipae.googlemapsearcher.R
 import gr.dipae.googlemapsearcher.databinding.ActivityAppBinding
@@ -14,6 +16,18 @@ class AppActivity : BaseActivity<ActivityAppBinding>() {
     private val viewModel: AppViewModel by viewModels()
 
     override fun getViewBinding(): ActivityAppBinding = ActivityAppBinding.inflate(layoutInflater)
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setupLoadingObserver()
+    }
+
+    private fun setupLoadingObserver() {
+        LoadingLiveData.observe(this) {
+            binding.loadingGroup.isVisible = it
+        }
+    }
 
     fun checkForLocationServices() {
         if (hasPermissions(FOREGROUND_LOCATION_PERMISSIONS)) {

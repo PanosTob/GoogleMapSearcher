@@ -8,9 +8,9 @@ import javax.inject.Inject
 class GetGooglePlacesUseCase @Inject constructor(
     private val repository: MapSearcherRepository
 ) {
-    suspend operator fun invoke(query: String): GooglePlaces {
+    suspend operator fun invoke(location: String, query: String): GooglePlaces {
         return try {
-            repository.getGooglePlaces(query)
+            repository.getGooglePlaces(location, query)
         } catch (ex: Exception) {
             Timber.tag(GetGooglePlacesUseCase::class.simpleName).e(ex)
             GooglePlaces()

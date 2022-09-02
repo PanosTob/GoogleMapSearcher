@@ -7,6 +7,9 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface GooglePlacesApi {
-    @GET("/maps/api/place/textsearch/json?location=latitude,longitude&radius=5000&key=AIzaSyAxdaDkuLvnbcZTmgc5BfnIrDiqNlskQuY")
-    suspend fun getGooglePlaces(@Query("query") query: String): Response<GooglePlacesResponse>
+    @GET("/maps/api/place/textsearch/json?radius=5000&key=AIzaSyAxdaDkuLvnbcZTmgc5BfnIrDiqNlskQuY")
+    suspend fun getGooglePlaces(
+        @Query("location") location: String,
+        @Query("query") query: String
+    ): Response<GooglePlacesResponse>
 }
