@@ -19,6 +19,7 @@
         app:uiZoomControls="false"
         app:uiZoomGestures="true" />
 
+    <!--header-->
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
         android:layout_width="0dp"
@@ -30,7 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/my_location_btn"
         app:layout_constraintEnd_toStartOf="@id/my_location_btn"/>
-    <!--header-->
+
     <ImageView
         android:id="@+id/my_location_btn"
         android:layout_width="0dp"

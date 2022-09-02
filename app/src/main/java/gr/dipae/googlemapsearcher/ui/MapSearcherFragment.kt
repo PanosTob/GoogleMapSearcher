@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -53,6 +55,7 @@ class MapSearcherFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallba
 
     override fun onStart() {
         super.onStart()
+        (activity as? AppActivity)?.handleLocationPermissions()
         binding.outdoorMapView.onStart()
     }
 
@@ -84,12 +87,16 @@ class MapSearcherFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallba
     override fun setupObservers() {
         with(activityViewModel) {
             locationServicesUI.observe(viewLifecycleOwner) {
-//                viewModel.initUserLocation()
+                viewModel.initUserLocation()
             }
         }
         with(viewModel) {
             showGooglePlacesUI.observe(viewLifecycleOwner) {
                 showItemsOnMap(it)
+            }
+            showUserLocationOnMapUI.observe(viewLifecycleOwner, Observer(::showUserLocationOnMapUI))
+            initUserLocationUI.observe(viewLifecycleOwner) {
+                initUserLocationUI()
             }
         }
     }
@@ -102,7 +109,6 @@ class MapSearcherFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallba
         }
 
         setupClusterManager()
-//        viewModel.initOutdoorMap()
 
         (activity as? AppActivity)?.checkForLocationServices()
     }
@@ -131,12 +137,23 @@ class MapSearcherFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallba
         googleMap?.uiSettings?.isMyLocationButtonEnabled = false
         googleMap?.uiSettings?.isCompassEnabled = false
 
-        binding.searchView.setOnSearchClickListener {
-            viewModel.searchForGooglePlaces(binding.searchView.query.toString())
-        }
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                viewModel.searchForGooglePlaces(binding.searchView.query.toString())
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+
+        })
         binding.myLocationBtn.apply {
             updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 topMargin = resources.getStatusBarHeight() + resources.getDimensionPixelSize(R.dimen.margin_half_8dp)
+            }
+            setOnClickListener {
+                viewModel.centerOnUserLocation()
             }
         }
         binding.searchView.apply {

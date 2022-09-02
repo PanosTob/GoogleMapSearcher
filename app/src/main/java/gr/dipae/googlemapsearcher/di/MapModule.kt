@@ -1,10 +1,16 @@
 package gr.dipae.googlemapsearcher.di
 
+import android.app.Application
+import android.content.Context
+import android.location.LocationManager
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import gr.dipae.googlemapsearcher.BuildConfig
 import gr.dipae.googlemapsearcher.data.*
@@ -57,6 +63,16 @@ object MapModule {
             .build()
             .create(GooglePlacesApi::class.java)
     }
+
+    @Provides
+    fun provideLocationManager(application: Application): LocationManager {
+        return application.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    }
+
+    @Singleton
+    @Provides
+    fun provideFusedLocationProviderClient(@ApplicationContext context: Context): FusedLocationProviderClient =
+        LocationServices.getFusedLocationProviderClient(context)
 }
 
 @ExperimentalCoroutinesApi

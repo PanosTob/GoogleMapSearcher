@@ -3,13 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/shape_rect_white.xml" value="0.237" />
         <entry key="app/src/main/res/drawable/ic_custer_item_pin.xml" value="0.237" />
         <entry key="app/src/main/res/drawable/ic_my_location.xml" value="0.2035" />
         <entry key="app/src/main/res/drawable/shape_circle_white.xml" value="0.2035" />
+        <entry key="app/src/main/res/drawable/shape_rect_white.xml" value="0.237" />
         <entry key="app/src/main/res/layout/activity_app.xml" value="0.1969775924960917" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.378125" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.196875" />
         <entry key="app/src/main/res/layout/fragment_map.xml" value="0.3723076923076923" />
+        <entry key="app/src/main/res/layout/layout_general_two_option_dialog.xml" value="0.378125" />
       </map>
     </option>
   </component>
